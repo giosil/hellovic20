@@ -1,0 +1,99 @@
+ca65 V2.15 - Git 62c2177
+Main file   : main.asm
+Current file: main.asm
+
+000000r 1               ; kernal routines
+000000r 1               CHROUT = $ffd2
+000000r 1               GETIN  = $ffe4
+000000r 1               PLOT   = $fff0
+000000r 1               READST = $ff8a
+000000r 1               
+000000r 1               ; char codes
+000000r 1               CHR_CLR_HOME = 147
+000000r 1               
+000000r 1               ; color codes
+000000r 1               COLOR_BLACK  = 0
+000000r 1               COLOR_WHITE  = 1
+000000r 1               COLOR_RED    = 2
+000000r 1               COLOR_CYAN   = 3
+000000r 1               COLOR_PURPLE = 4
+000000r 1               COLOR_GREEN  = 5
+000000r 1               COLOR_BLUE   = 6
+000000r 1               COLOR_YELLOW = 7
+000000r 1               
+000000r 1               ; zero page variables
+000000r 1               
+000000r 1               cur_color   = $0286  ; color for CHROUT
+000000r 1               
+000000r 1               ;*****************************************************************
+000000r 1               ; start prg
+000000r 1               ;*****************************************************************
+000000r 1               
+000000r 1  01 10          .byt $01,$10 ; PRG file header (starting address of the program)
+000002r 1               
+000002r 1                 .org $1001   ; start of basic program
+001001  1               
+001001  1               ;*****************************************************************
+001001  1               ; basic stub
+001001  1               ;*****************************************************************
+001001  1               
+001001  1                 ; stub basic program
+001001  1                 ;
+001001  1                 ; 2015 SYS4109
+001001  1                 ;
+001001  1  0B 10          .word bend            ; next line link
+001003  1  DF 07          .word 2015            ; line number
+001005  1  9E 34 31 30    .byte $9e,52,49,48,57 ; sys4109 (4096+13 = bytes of basic program)
+001009  1  39           
+00100A  1  00             .byte 0               ; end of line
+00100B  1  00 00        bend:  .word 0          ; end of program
+00100D  1               
+00100D  1               ;*****************************************************************
+00100D  1               ; main program
+00100D  1               ;*****************************************************************
+00100D  1               
+00100D  1               start:
+00100D  1  20 22 10       jsr clear_screen  ; jump save retourn -> clear_screen
+001010  1               
+001010  1  A0 07          ldy #COLOR_YELLOW ; init y = COLOR_YELLOW
+001012  1               @mloop:
+001012  1  98             tya               ; Transfer y register to accumulator (a)
+001013  1  8D 86 02       sta cur_color     ; Store accumulator (a) -> cur_color (set color CHROUT)
+001016  1  20 28 10       jsr print_message ; jump save return -> print_message
+001019  1  88             dey               ; y = y - 1
+00101A  1  D0 F6          bne @mloop        ; Branch if not equal (Z=0) (if y == 0 goto @mloop)
+00101C  1               
+00101C  1                                   ; Restore default color
+00101C  1  A9 06          lda #COLOR_BLUE   ; Load a = COLOR_BLUE (default color)
+00101E  1  8D 86 02       sta cur_color     ; Store accumulator (a) -> cur_color (set color CHROUT)
+001021  1  60             rts               ; exit (Return from subroutine)
+001022  1               
+001022  1               clear_screen:
+001022  1  A9 93          lda #CHR_CLR_HOME ; Load a = CHR_CLR_HOME (147)
+001024  1  20 D2 FF       jsr CHROUT        ; jump save return -> CHROUT (print a)
+001027  1  60             rts               ; Return from subroutine
+001028  1               
+001028  1               print_message:
+001028  1  A2 00          ldx #0            ; init x = 0
+00102A  1               @pmloop:
+00102A  1  BD 40 10       lda message,x     ; Load a = message + x
+00102D  1  F0 06          beq exit          ; Branch if the Zero flag is set (Z=1) (if a == 0 goto exit)
+00102F  1  20 D2 FF       jsr CHROUT        ; jump save return -> CHROUT (print a)
+001032  1  E8             inx               ; x = x + 1
+001033  1  D0 F5          bne @pmloop       ; Branch if not equal (Z=0) goto @pmloop
+001035  1               exit:
+001035  1  A9 0D          lda #13           ; Load a = 13 (Carriage Return)
+001037  1  20 D2 FF       jsr CHROUT        ; jump save return -> CHROUT (print a)
+00103A  1  A9 0A          lda #10           ; Load a = 10 (Line Feed)
+00103C  1  20 D2 FF       jsr CHROUT        ; jump save return -> CHROUT (print a)
+00103F  1  60             rts               ; Return from subroutine
+001040  1               
+001040  1               ;*****************************************************************
+001040  1               ; data
+001040  1               ;*****************************************************************
+001040  1               
+001040  1               ;              H  E  L  L  O     V  I  C  2  0   .
+001040  1  48 45 4C 4C  message: .byte 72,69,76,76,79,32,86,73,67,50,48,46,$00
+001044  1  4F 20 56 49  
+001048  1  43 32 30 2E  
+00104C  1               

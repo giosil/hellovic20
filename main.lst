@@ -53,7 +53,7 @@ Current file: main.asm
 00100D  1               ;*****************************************************************
 00100D  1               
 00100D  1               start:
-00100D  1  20 22 10       jsr clear_screen  ; jump save retourn -> clear_screen
+00100D  1  20 22 10       jsr clear_screen  ; jump save return -> clear_screen
 001010  1               
 001010  1  A0 07          ldy #COLOR_YELLOW ; init y = COLOR_YELLOW
 001012  1               @mloop:

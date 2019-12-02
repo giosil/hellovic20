@@ -48,7 +48,7 @@ bend:  .word 0          ; end of program
 ;*****************************************************************
 
 start:
-  jsr clear_screen  ; jump save retourn -> clear_screen
+  jsr clear_screen  ; jump save return -> clear_screen
   
   ldy #COLOR_YELLOW ; init y = COLOR_YELLOW
 @mloop:

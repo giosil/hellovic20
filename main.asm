@@ -56,18 +56,18 @@ start:
   sta cur_color     ; Store accumulator (a) -> cur_color (set color CHROUT)
   jsr print_message ; jump save return -> print_message
   dey               ; y = y - 1
-  bne @mloop        ; Branch if not equal (Z=0) (if y == 0 goto @mloop)
+  bne @mloop        ; Branch if not equal (Z=0) (if y <> 0 goto @mloop)
   
                     ; Restore default color
   lda #COLOR_BLUE   ; Load a = COLOR_BLUE (default color)
   sta cur_color     ; Store accumulator (a) -> cur_color (set color CHROUT)
   rts               ; exit (Return from subroutine)
-
+  
 clear_screen:
   lda #CHR_CLR_HOME ; Load a = CHR_CLR_HOME (147)
   jsr CHROUT        ; jump save return -> CHROUT (print a)
   rts               ; Return from subroutine
-
+  
 print_message:
   ldx #0            ; init x = 0
 @pmloop:
@@ -82,7 +82,7 @@ exit:
   lda #10           ; Load a = 10 (Line Feed)
   jsr CHROUT        ; jump save return -> CHROUT (print a)
   rts               ; Return from subroutine
-
+  
 ;*****************************************************************
 ; data
 ;*****************************************************************

@@ -61,7 +61,7 @@ Current file: main.asm
 001013  1  8D 86 02       sta cur_color     ; Store accumulator (a) -> cur_color (set color CHROUT)
 001016  1  20 28 10       jsr print_message ; jump save return -> print_message
 001019  1  88             dey               ; y = y - 1
-00101A  1  D0 F6          bne @mloop        ; Branch if not equal (Z=0) (if y == 0 goto @mloop)
+00101A  1  D0 F6          bne @mloop        ; Branch if not equal (Z=0) (if y <> 0 goto @mloop)
 00101C  1               
 00101C  1                                   ; Restore default color
 00101C  1  A9 06          lda #COLOR_BLUE   ; Load a = COLOR_BLUE (default color)

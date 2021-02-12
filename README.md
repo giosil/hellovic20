@@ -10,7 +10,7 @@ Sample assembly program for MOS 6502 (VIC20).
 
 ## Run on xvic
 
-- Load hello.prg from File->Autostart disk/tape image..
+- Load hello.prg from File->Autostart disk/tape image...
 
 ![XVic Emulator](xvic.png)
 
